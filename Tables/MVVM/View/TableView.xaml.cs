@@ -13,24 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Tables
+namespace Tables.MVVM.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Логика взаимодействия для TableView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class TableView : UserControl
     {
-        public MainWindow()
+        public TableView()
         {
             InitializeComponent();
-        }
-
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
-        {
-            base.OnMouseLeftButtonDown(e);
-
-            // Begin dragging the window
-            this.DragMove();
         }
     }
 }

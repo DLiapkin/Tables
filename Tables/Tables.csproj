@@ -8,10 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\Create.png" />
+    <None Remove="Images\Open.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="MVVM\Model\" />
-    <Folder Include="MVVM\View\" />
-    <Folder Include="MVVM\ViewModel\" />
-    <Folder Include="Theme\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\Create.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Open.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

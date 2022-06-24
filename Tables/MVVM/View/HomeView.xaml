@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="Tables.MVVM.View.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Tables.MVVM.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="Transparent">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0"
+                CornerRadius="10"
+                Height="200"
+                Width="200"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Margin="0,0,50,0"
+                Background="#272730"
+                BorderThickness="1"
+                BorderBrush="Black">
+
+            <Grid>
+                <Button Content="Create"
+                    Name="createButton"
+                    FontSize="26"
+                    Foreground="White"
+                    Style="{StaticResource HomeButtonTheme}"/>
+
+                <Image Height="40"
+                       Width="40"
+                       Source="/Images/Create.png" Margin="10,62,113,61"/>
+            </Grid>
+
+        </Border>
+
+        <Border Grid.Column="1"
+                CornerRadius="10"
+                Height="200"
+                Width="200"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Margin="50,0,0,0"
+                Background="#272730"
+                BorderThickness="1"
+                BorderBrush="Black">
+
+            <Grid>
+                <Button Content="Open"
+                    Name="openButton"
+                    FontSize="26"
+                    Foreground="White"
+                    Style="{StaticResource HomeButtonTheme}"/>
+
+                <Image Height="40"
+                       Width="40"
+                       Source="/Images/Open.png" Margin="21,62,102,61"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
