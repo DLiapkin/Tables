@@ -9,15 +9,15 @@
         WindowStyle="None"
         Height="600" Width="920"
         Background="Transparent"
-        ResizeMode="CanResize">
+        AllowsTransparency="True"
+        ResizeMode="CanResizeWithGrip">
 
     <Window.DataContext>
         <viewModel:MainViewModel/>
     </Window.DataContext>
-    
+
     <Border Background="#272537"
-            CornerRadius="20"
-            BorderThickness="1,0,0,0">
+            CornerRadius="20, 0, 0, 20">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
@@ -25,17 +25,59 @@
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Column ="0"
-                       Text ="Tables"
+            <Border Background="#272529"
+                    Grid.Column="0">
+                <TextBlock Text ="Tables"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Left"
                        Foreground="White"
-                       FontSize = "22"
+                       FontSize = "18"
                        Margin="20,0,0,0"/>
+            </Border>
+
+            <Border Background="#272529"
+                    Grid.Column="1" Grid.ColumnSpan="2">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Content="🗕︎"
+                            Height="20"
+                            Width="20"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Background="Transparent"
+                            Foreground="White"
+                            BorderThickness="0"
+                            Margin="0 5 5 0"
+                            Click="MinimizeButtonClick"/>
+
+                    <Button Content="🗖︎"
+                            Height="20"
+                            Width="20"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Background="Transparent"
+                            Foreground="White"
+                            FontSize="13"
+                            BorderThickness="0"
+                            Margin="0 5 5 0"
+                            Click="WindowStateButtonClick"/>
+
+                    <Button Content="✕"
+                            Height="20"
+                            Width="20"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Background="Transparent"
+                            Foreground="White"
+                            BorderThickness="0"
+                            Margin="0 5 5 0"
+                            Click="CloseButtonClick"/>
+                </StackPanel>
+            </Border>
 
             <StackPanel Grid.Row="1">
                 <RadioButton Content="Home"
@@ -53,24 +95,11 @@
                              FontSize="14"
                              Style="{StaticResource MenuButtonTheme}"/>
 
-                <RadioButton Content="Settings"
-                             Height="50"
-                             Foreground="White"
-                             FontSize="14"
-                             Style="{StaticResource MenuButtonTheme}"/>
             </StackPanel>
-
-            <TextBox Width="250"
-                     Height="40"
-                     VerticalAlignment="Center"
-                     HorizontalAlignment="Left"
-                     Margin="5"
-                     Grid.Column="1"
-                     Style="{StaticResource SearchTextBox}"/>
 
             <ContentControl Grid.Row="1"
                             Grid.Column="1"
-                            Margin="10"
+                            Margin="5"
                             Content="{Binding CurrentView}"/>
         </Grid>
 

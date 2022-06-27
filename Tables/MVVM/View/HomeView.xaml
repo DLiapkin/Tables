@@ -21,7 +21,7 @@
                 HorizontalAlignment="Right"
                 Margin="0,0,50,0"
                 Background="#272730"
-                BorderThickness="1"
+                BorderThickness="0.5"
                 BorderBrush="Black">
 
             <Grid>
@@ -31,9 +31,16 @@
                     Foreground="White"
                     Style="{StaticResource HomeButtonTheme}"/>
 
-                <Image Height="40"
-                       Width="40"
-                       Source="/Images/Create.png" Margin="10,62,113,61"/>
+                <Rectangle Width="40"
+                           Height="40"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Margin="25 0 0 0">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="/Images/Create.png"
+                                    RenderOptions.BitmapScalingMode="Fant"/>
+                    </Rectangle.Fill>
+                </Rectangle>
             </Grid>
 
         </Border>
@@ -46,7 +53,7 @@
                 HorizontalAlignment="Left"
                 Margin="50,0,0,0"
                 Background="#272730"
-                BorderThickness="1"
+                BorderThickness="0.5"
                 BorderBrush="Black">
 
             <Grid>
@@ -56,9 +63,16 @@
                     Foreground="White"
                     Style="{StaticResource HomeButtonTheme}"/>
 
-                <Image Height="40"
-                       Width="40"
-                       Source="/Images/Open.png" Margin="21,62,102,61"/>
+                <Rectangle Width="40"
+                           Height="40"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Margin="35 0 0 0">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="/Images/Open.png"
+                                    RenderOptions.BitmapScalingMode="Fant"/>
+                    </Rectangle.Fill>
+                </Rectangle>
             </Grid>
         </Border>
     </Grid>

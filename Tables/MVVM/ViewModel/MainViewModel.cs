@@ -15,9 +15,9 @@ namespace Tables.MVVM.ViewModel
         public RelayCommand HomeViewCommand { get; set; }
         public RelayCommand TableViewCommand { get; set; }
 
-        private object _currentView;
+        private ObservableObject _currentView;
 
-        public object CurrentView
+        public ObservableObject CurrentView
         {
             get { return _currentView; }
             set 

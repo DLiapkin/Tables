@@ -6,7 +6,60 @@
              xmlns:local="clr-namespace:Tables.MVVM.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Wheat">
-            
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal">
+            <TextBox Width="250"
+                     Height="40"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Left"
+                     Margin="5"
+                     Grid.Column="1"
+                     Style="{StaticResource SearchTextBox}"/>
+
+            <Button Content="save"
+                            Height="30"
+                            Width="40"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            Background="Transparent"
+                            Foreground="White"
+                            BorderThickness="1"
+                            Margin="0 5 5 0"/>
+
+            <Button Content="export"
+                            Height="30"
+                            Width="50"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Background="Transparent"
+                            Foreground="White"
+                            FontSize="13"
+                            BorderThickness="1"
+                            Margin="0 5 5 0"/>
+
+            <Button Content="delete"
+                            Height="30"
+                            Width="50"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Background="Transparent"
+                            Foreground="White"
+                            BorderThickness="1"
+                            Margin="0 5 5 0"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+            <DataGrid x:Name="phonesGrid" 
+                      AutoGenerateColumns="True" 
+                      VerticalAlignment="Stretch">
+                
+            </DataGrid>
+        </StackPanel>
     </Grid>
 </UserControl>
