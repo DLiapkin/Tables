@@ -6,10 +6,5 @@ namespace Tables.MVVM.ViewModel
     class BaseViewModel : ObservableObject
     {
         public TableModel Table { get; set; }
-
-        public BaseViewModel()
-        {
-
-        }
     }
 }

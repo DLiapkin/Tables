@@ -10,7 +10,7 @@ namespace Tables.MVVM.ViewModel
     {
         public TableViewModel()
         {
-            Table = new Model.TableModel(@"D:\IBAtraining\Task 3\dataset.csv");
+            Table = new Model.TableModel(@"D:\IBAtraining\Task 3\harder.csv");
         }
     }
 }
