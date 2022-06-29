@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Tables.Core;
 
 namespace Tables.MVVM.Model
 {
@@ -20,8 +21,8 @@ namespace Tables.MVVM.Model
 
         public TableModel(string filePath)
         {
-            string[] path = filePath.Split('/');
-            TableName = path[-0].Replace(".csv", "");
+            string[] path = filePath.Split('\\');
+            TableName = path[^1].Replace(".csv", "");
             ColumnHeaders = new List<string>() {"Date", "Name", "LastName", "Surname", "City", "Country"};
             TableData = LoadCSV(filePath);
         }
@@ -43,6 +44,12 @@ namespace Tables.MVVM.Model
                 rows.Add(row);
             }
             return rows;
+        }
+
+        public void Save(string filePath)
+        {
+            DataHandler handler = new DataHandler();
+            handler.Serialize(filePath, TableName, TableData);
         }
     }
 }

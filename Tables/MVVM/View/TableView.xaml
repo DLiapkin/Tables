@@ -37,6 +37,7 @@
                     Foreground="White"
                     BorderThickness="1"
                     Margin="0 5 5 0"
+                    Command="{Binding SaveCommand}"
                     Style="{StaticResource TableButtonTheme}"/>
 
             <Button Content="export"
@@ -72,7 +73,7 @@
                   CanUserAddRows="True"
                   CanUserReorderColumns="False"
                   GridLinesVisibility="Vertical"
-                  VerticalScrollBarVisibility="Hidden"
+                  VerticalScrollBarVisibility="Visible"
                   SelectionUnit="CellOrRowHeader"
                   BorderThickness="0"
                   Margin="10"
