@@ -64,16 +64,16 @@
                     Style="{StaticResource TableButtonTheme}"/>
         </StackPanel>
 
-        <DataGrid x:Name="phonesGrid"
+        <DataGrid x:Name="employeeGrid"
                   Grid.Row="1"
                   CellStyle="{StaticResource DataGridCellStyle}"
                   RowHeaderStyle="{StaticResource DataGridRowHeaderStyle}"
                   ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}"
                   VerticalAlignment="Stretch"
-                  CanUserAddRows="True"
+                  CanUserAddRows="False"
                   CanUserReorderColumns="False"
                   GridLinesVisibility="Vertical"
-                  VerticalScrollBarVisibility="Visible"
+                  VerticalScrollBarVisibility="Auto"
                   SelectionUnit="CellOrRowHeader"
                   BorderThickness="0"
                   Margin="10"

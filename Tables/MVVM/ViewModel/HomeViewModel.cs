@@ -7,11 +7,12 @@ namespace Tables.MVVM.ViewModel
 {
     class HomeViewModel : BaseViewModel
     {
-        public RelayCommand OpenFileCommand { get; set; }
+        public RelayCommand OpenCommand { get; set; }
+        public RelayCommand CreateCommand { get; set; }
 
         public HomeViewModel()
         {
-            OpenFileCommand = new RelayCommand(o =>
+            OpenCommand = new RelayCommand(o =>
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Filter = "CSV Files (*.csv)|*.csv";
@@ -21,6 +22,12 @@ namespace Tables.MVVM.ViewModel
                 {
                     Table = new TableModel(openFileDialog.FileName);
                 }
+            });
+
+            CreateCommand = new RelayCommand(o =>
+            {
+                Table = new TableModel();
+                Table.ClearDb();
             });
         }
     }

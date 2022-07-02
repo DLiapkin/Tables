@@ -16,5 +16,10 @@ namespace Tables.MVVM.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        //public BaseViewModel()
+        //{
+        //    Table = new TableModel();
+        //}
     }
 }

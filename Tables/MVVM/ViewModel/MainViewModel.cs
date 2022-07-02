@@ -1,5 +1,5 @@
-﻿using Microsoft.Win32;
-using Tables.Core;
+﻿using Tables.Core;
+using Tables.MVVM.Model;
 
 namespace Tables.MVVM.ViewModel
 {

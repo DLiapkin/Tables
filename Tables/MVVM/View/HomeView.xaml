@@ -32,10 +32,11 @@
 
             <Grid>
                 <Button Content="Create"
-                    Name="createButton"
-                    FontSize="26"
-                    Foreground="White"
-                    Style="{StaticResource HomeButtonTheme}"/>
+                        Name="createButton"
+                        FontSize="26"
+                        Foreground="White"
+                        Command="{Binding CreateCommand}"
+                        Style="{StaticResource HomeButtonTheme}"/>
 
                 <Rectangle Width="40"
                            Height="40"
@@ -67,7 +68,7 @@
                         Name="openButton"
                         FontSize="26"
                         Foreground="White"
-                        Command="{Binding OpenFileCommand}"
+                        Command="{Binding OpenCommand}"
                         Style="{StaticResource HomeButtonTheme}"/>
 
                 <Rectangle Width="40"

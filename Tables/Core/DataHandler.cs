@@ -9,11 +9,11 @@ namespace Tables.Core
 {
     class DataHandler
     {
-        public void Serialize(string filePath, string tableName, ObservableCollection<DataRowModel> rowsToSave)
+        public void Serialize(string filePath, string tableName, ObservableCollection<Employee> rowsToSave)
         {
             XDocument document = new XDocument();
             XElement records = new XElement(tableName);
-            foreach (DataRowModel row in rowsToSave)
+            foreach (Employee row in rowsToSave)
             {
                 XElement record = new XElement("record", new XAttribute("id", rowsToSave.IndexOf(row)));
                 record.Add(new XElement("Date", row.Date.ToString()));

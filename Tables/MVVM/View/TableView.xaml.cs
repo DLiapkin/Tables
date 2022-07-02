@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Tables.MVVM.ViewModel;
 
 namespace Tables.MVVM.View
 {
@@ -23,6 +24,10 @@ namespace Tables.MVVM.View
         public TableView()
         {
             InitializeComponent();
+            //TableViewModel tableViewModel = new TableViewModel();
+            //DataContext = tableViewModel;
+            //tableViewModel.InitializeTable();
+            //employeeGrid.ItemsSource = tableViewModel.Table.TableData;
         }
     }
 }

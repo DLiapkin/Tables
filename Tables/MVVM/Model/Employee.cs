@@ -2,8 +2,9 @@
 
 namespace Tables.MVVM.Model
 {
-    class DataRowModel
+    class Employee
     {
+        public int Id { get; set; }
         public DateTime Date { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
