@@ -62,18 +62,33 @@ namespace Tables.MVVM.Model
         {
             using (DataBaseContext context = new DataBaseContext())
             {
-                foreach (Employee employee in TableData)
+                context.ChangeTracker.AutoDetectChangesEnabled = false;
+                try
                 {
-                    //var result = context.Employees.FirstOrDefault(
-                    //    e => e.Name == employee.Name 
-                    //    && e.LastName == employee.LastName 
-                    //    && e.Surname == employee.Surname);
-                    //if(result == null)
-                    //{
-                        context.Employees.Add(employee);
-                    //}
+                    for (int i = 0; i < TableData.Count; i++)
+                    {
+                        var employee = TableData[i];
+                        //var result = context.Employees.FirstOrDefault(
+                        //    e => e.Name == employee.Name
+                        //    && e.LastName == employee.LastName
+                        //    && e.Surname == employee.Surname);
+                        //if (result == null)
+                        //{
+                            context.Employees.Add(employee);
+                        //}
+
+                        if (i % 5000 == 0)
+                        {
+                            context.ChangeTracker.DetectChanges();
+                            context.SaveChanges();
+                        }
+                    }
                 }
-                context.SaveChanges();
+                finally
+                {
+                    context.ChangeTracker.AutoDetectChangesEnabled = true;
+                    context.SaveChanges();
+                }
             }
         }
 
