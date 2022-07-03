@@ -12,37 +12,40 @@
         <viewModel:TableViewModel/>
     </UserControl.DataContext>
 
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="VisibleIfTrueConverter"/>
+    </UserControl.Resources>
+
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="8*"/>
+            <RowDefinition Height="9*"/>
         </Grid.RowDefinitions>
-        
+
         <StackPanel Grid.Row="0"
-                    Orientation="Horizontal">
-            <TextBox Width="250"
-                     Height="40"
-                     VerticalAlignment="Center"
-                     HorizontalAlignment="Left"
-                     Margin="5"
-                     Grid.Column="1"
-                     Style="{StaticResource SearchTextBox}"/>
+                    Orientation="Horizontal"
+                    Margin="20 0 0 0">
+            <Label Width="60"
+                   Height="30"
+                   Content="Filters"
+                   Foreground="White"
+                   FontSize="18"/>
 
-            <Button Content="save"
-                    Height="30"
-                    Width="40"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
-                    Foreground="White"
-                    BorderThickness="1"
-                    Margin="0 5 5 0"
-                    Command="{Binding SaveCommand}"
-                    Style="{StaticResource TableButtonTheme}"/>
+            <ToggleButton x:Name="toggleExport"
+                          Command="{Binding ChangeVisibility}"
+                          Height="30"
+                          Width="50"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Left"
+                          Background="Transparent"
+                          Foreground="White"
+                          BorderThickness="1"
+                          Margin="0 5 5 0"
+                          Style="{StaticResource ExportButtonTheme}"/>    
 
-            <Button Content="export"
+            <Button Content="Export to XML"
                     Height="30"
-                    Width="50"
+                    Width="95"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
                     Background="Transparent"
@@ -50,21 +53,149 @@
                     FontSize="13"
                     BorderThickness="1"
                     Margin="0 5 5 0"
+                    Visibility="{Binding IsChecked, ElementName=toggleExport, Converter={StaticResource VisibleIfTrueConverter}}"
+                    Command="{Binding ExportXml}"
                     Style="{StaticResource TableButtonTheme}"/>
 
-            <Button Content="delete"
+            <Button Content="Export to Excel"
                     Height="30"
-                    Width="50"
+                    Width="95"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
                     Background="Transparent"
                     Foreground="White"
                     BorderThickness="1"
                     Margin="0 5 5 0"
+                    Visibility="{Binding IsChecked, ElementName=toggleExport, Converter={StaticResource VisibleIfTrueConverter}}"
+                    Command="{Binding ExportExcel}"
                     Style="{StaticResource TableButtonTheme}"/>
         </StackPanel>
 
+        <StackPanel Grid.Row="1"
+                    x:Name="filterPanel"
+                    Visibility="{Binding IsChecked, ElementName=toggleExport, Converter={StaticResource VisibleIfTrueConverter}}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.2*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="0"
+                       Grid.Row="0"
+                       Foreground="White"
+                       FontSize="22"
+                       Content="Date"/>
+
+                <TextBox Width="175"
+                         Height="40"
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Left"
+                         Margin="5"
+                         Grid.Column="1"
+                         Focusable="True"
+                         x:Name="dateBox"
+                         Text="{Binding Filter.Date}"
+                         Style="{StaticResource SearchTextBox}"/>
+
+                <Label Grid.Column="0"
+                       Grid.Row="1"
+                       Foreground="White"
+                       FontSize="22"
+                       Content="Name"/>
+
+                <TextBox Width="175"
+                         Height="40"
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Left"
+                         Margin="5"
+                         Grid.Column="1"
+                         Grid.Row="1"
+                         Focusable="True"
+                         x:Name="nameBox"
+                         Text="{Binding Filter.Name}"
+                         Style="{StaticResource SearchTextBox}"/>
+
+                <Label Grid.Column="0"
+                       Grid.Row="2"
+                       Foreground="White"
+                       FontSize="21"
+                       Content="Last Name"/>
+
+                <TextBox Width="175"
+                         Height="40"
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Left"
+                         Margin="5"
+                         Grid.Column="1"
+                         Grid.Row="2"
+                         Focusable="True"
+                         Text="{Binding Filter.LastName}"
+                         Style="{StaticResource SearchTextBox}"/>
+
+                <Label Grid.Column="0"
+                       Grid.Row="3"
+                       Foreground="White"
+                       FontSize="21"
+                       Content="Surname"/>
+
+                <TextBox Width="175"
+                         Height="40"
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Left"
+                         Margin="5"
+                         Grid.Column="1"
+                         Grid.Row="3"
+                         Focusable="True"
+                         Text="{Binding Filter.Surname}"
+                         Style="{StaticResource SearchTextBox}"/>
+
+                <Label Grid.Column="0"
+                       Grid.Row="4"
+                       Foreground="White"
+                       FontSize="21"
+                       Content="City"/>
+
+                <TextBox Width="175"
+                         Height="40"
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Left"
+                         Margin="5"
+                         Grid.Column="1"
+                         Grid.Row="4"
+                         Focusable="True"
+                         Text="{Binding Filter.City}"
+                         Style="{StaticResource SearchTextBox}"/>
+
+                <Label Grid.Column="0"
+                       Grid.Row="5"
+                       Foreground="White"
+                       FontSize="21"
+                       Content="Country"/>
+
+                <TextBox Width="175"
+                         Height="40"
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Left"
+                         Margin="5"
+                         Grid.Column="1"
+                         Grid.Row="5"
+                         Focusable="True"
+                         Text="{Binding Filter.Country}"
+                         Style="{StaticResource SearchTextBox}"/>
+            </Grid>
+        </StackPanel>
+
         <DataGrid x:Name="employeeGrid"
+                  Visibility="{Binding IsCollapsed, Converter={StaticResource VisibleIfTrueConverter}}"
                   Grid.Row="1"
                   CellStyle="{StaticResource DataGridCellStyle}"
                   RowHeaderStyle="{StaticResource DataGridRowHeaderStyle}"

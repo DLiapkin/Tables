@@ -7,27 +7,71 @@ namespace Tables.MVVM.ViewModel
 {
     class TableViewModel : BaseViewModel
     {
-        public RelayCommand SaveCommand { get; set; }
+        private bool isCollapsed = true;
+        private Filter filter;
+
+        public Filter Filter 
+        {
+            get => filter; 
+            set
+            {
+                filter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsCollapsed
+        {
+            get 
+            { 
+                return isCollapsed; 
+            }
+            set 
+            { 
+                isCollapsed = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public RelayCommand ChangeVisibility { get; set; }
+        public RelayCommand ExportXml { get; set; }
+        public RelayCommand ExportExcel { get; set; }
 
         public TableViewModel()
         {
-            //Table = new Model.TableModel(@"D:\IBAtraining\Task 3\harder.csv");
             Table = new TableModel();
-            SaveCommand = new RelayCommand(o =>
+            Filter = new Filter();
+            ChangeVisibility = new RelayCommand(o =>
+            {
+                if (isCollapsed)
+                {
+                    IsCollapsed = false;
+                }
+                else
+                {
+                    IsCollapsed = true;
+                }
+            });
+            ExportXml = new RelayCommand(o =>
             {
                 SaveFileDialog saveDialog = new SaveFileDialog();
                 saveDialog.Filter = "XML Files (*.xml)|*.xml";
                 saveDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 if (saveDialog.ShowDialog() == true)
                 {
-                    Table.SaveToXml(saveDialog.FileName);
+                    Table.SaveToXml(saveDialog.FileName, Filter);
+                }
+            });
+            ExportExcel = new RelayCommand(o =>
+            {
+                SaveFileDialog saveDialog = new SaveFileDialog();
+                saveDialog.Filter = "Excel files (*.xlsx)|*.xlsx";
+                saveDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                if (saveDialog.ShowDialog() == true)
+                {
+                    Table.SaveToExcel(saveDialog.FileName, Filter);
                 }
             });
         }
-
-        //public void InitializeTable()
-        //{
-        //    Table = new TableModel();
-        //}
     }
 }

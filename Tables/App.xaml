@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="Theme/HomeButtonTheme.xaml"/>
                 <ResourceDictionary Source="Theme/DataGridThemes.xaml"/>
                 <ResourceDictionary Source="Theme/TableButtonTheme.xaml"/>
+                <ResourceDictionary Source="Theme/ExportButtonTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
 
