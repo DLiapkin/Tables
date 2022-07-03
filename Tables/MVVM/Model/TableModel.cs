@@ -29,8 +29,8 @@ namespace Tables.MVVM.Model
             string[] path = filePath.Split('\\');
             TableName = path[^1].Replace(".csv", "");
             ColumnHeaders = new List<string>() {"Id", "Date", "Name", "LastName", "Surname", "City", "Country"};
-            TableData = LoadCsv(filePath);
-            SaveToDb();
+            TableData = new ObservableCollection<Employee>();
+            SaveToDb(filePath);
         }
 
         public TableModel()
@@ -45,42 +45,37 @@ namespace Tables.MVVM.Model
         /// Loads employees from file in location of filePath
         /// </summary>
         /// <param name="filePath">Location of a file </param>
-        /// <returns>Observable collection of employees.</returns>
-        private ObservableCollection<Employee> LoadCsv(string filePath)
+        /// <returns>Collection of employees.</returns>
+        private async IAsyncEnumerable<Employee> LoadCsv(string filePath)
         {
-            if (String.IsNullOrEmpty(filePath))
+            using (var reader = new StreamReader(filePath))
             {
-                MessageBox.Show("Incorret file path!", "Loading error!", MessageBoxButton.OK, MessageBoxImage.Error);
-                return new ObservableCollection<Employee>();
-            }
-
-            var employeeList = fastCSV.ReadFile<Employee>(
-                filePath,          // filename
-                true,              // has header
-                ';',               // delimiter
-                (o, c) =>          // to object function o : employee object, c : columns array read
+                string line = "";
+                while ((line = await reader.ReadLineAsync()) != null)
                 {
-                    o.Date = DateTime.Parse(c[0]);
-                    o.Name = c[1];
-                    o.LastName = c[2];
-                    o.Surname = c[3];
-                    o.City = c[4];
-                    o.Country = c[5];
-                    // add to list
-                    return true;
-                });
-            ObservableCollection<Employee> rows = new ObservableCollection<Employee>(employeeList);
-            return rows;
+                    string[] data = line.Split(';');
+                    yield return new Employee()
+                    {
+                        Date = DateTime.Parse(data[0]),
+                        Name = data[1],
+                        LastName = data[2],
+                        Surname = data[3],
+                        City = data[4],
+                        Country = data[5]
+                    };
+                }
+            }
         }
 
         /// <summary>
         /// Saves employees to database
         /// </summary>
-        public void SaveToDb()
+        /// <param name="filePath">Location of a file </param>
+        public async void SaveToDb(string filePath)
         {
-            if (TableData.Count == 0)
+            if (String.IsNullOrEmpty(filePath))
             {
-                MessageBox.Show("Collection of employees is empty!", "Saving error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("File path is incorrect!", "Saving error!", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -89,15 +84,21 @@ namespace Tables.MVVM.Model
                 context.ChangeTracker.AutoDetectChangesEnabled = false;
                 try
                 {
-                    for (int i = 0; i < TableData.Count; i++)
+                    var data = LoadCsv(filePath);
+                    int i = 0;
+                    await foreach (Employee employee in data)
                     {
-                        var employee = TableData[i];
                         context.Employees.Add(employee);
 
                         if (i % 5000 == 0)
                         {
                             context.ChangeTracker.DetectChanges();
                             context.SaveChanges();
+                            i++;
+                        }
+                        else
+                        {
+                            i++;
                         }
                     }
                 }
