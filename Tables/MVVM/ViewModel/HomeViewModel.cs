@@ -1,10 +1,13 @@
-﻿using Tables.Core;
+﻿using System;
+using Tables.Core;
 using Microsoft.Win32;
 using Tables.MVVM.Model;
-using System;
 
 namespace Tables.MVVM.ViewModel
 {
+    /// <summary>
+    /// Represents View Model that controls Home UserControl
+    /// </summary>
     class HomeViewModel : BaseViewModel
     {
         public RelayCommand OpenCommand { get; set; }

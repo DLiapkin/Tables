@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Tables.Core
 {
+    /// <summary>
+    /// Represents combination of fields for export query
+    /// </summary>
     class Filter : ObservableObject
     {
         private string date = String.Empty;

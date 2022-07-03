@@ -2,6 +2,9 @@
 
 namespace Tables.MVVM.Model
 {
+    /// <summary>
+    /// Represents employee entity for Database
+    /// </summary>
     class Employee
     {
         public int Id { get; set; }

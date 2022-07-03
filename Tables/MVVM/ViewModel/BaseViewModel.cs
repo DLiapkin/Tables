@@ -3,6 +3,9 @@ using Tables.MVVM.Model;
 
 namespace Tables.MVVM.ViewModel
 {
+    /// <summary>
+    /// Base View Model that contains shared Model property
+    /// </summary>
     class BaseViewModel : ObservableObject
     {
         private TableModel table;
@@ -16,10 +19,5 @@ namespace Tables.MVVM.ViewModel
                 OnPropertyChanged();
             }
         }
-
-        //public BaseViewModel()
-        //{
-        //    Table = new TableModel();
-        //}
     }
 }

@@ -8,6 +8,9 @@ using System.Windows;
 
 namespace Tables.MVVM.Model
 {
+    /// <summary>
+    /// Represents table model that manipulate employees collection
+    /// </summary>
     class TableModel
     {
         public string TableName { get; set; }
@@ -38,8 +41,19 @@ namespace Tables.MVVM.Model
             LoadFromDb();
         }
 
+        /// <summary>
+        /// Loads employees from file in location of filePath
+        /// </summary>
+        /// <param name="filePath">Location of a file </param>
+        /// <returns>Observable collection of employees.</returns>
         private ObservableCollection<Employee> LoadCsv(string filePath)
         {
+            if (String.IsNullOrEmpty(filePath))
+            {
+                MessageBox.Show("Incorret file path!", "Loading error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return new ObservableCollection<Employee>();
+            }
+
             var employeeList = fastCSV.ReadFile<Employee>(
                 filePath,          // filename
                 true,              // has header
@@ -59,8 +73,17 @@ namespace Tables.MVVM.Model
             return rows;
         }
 
+        /// <summary>
+        /// Saves employees to database
+        /// </summary>
         public void SaveToDb()
         {
+            if (TableData.Count == 0)
+            {
+                MessageBox.Show("Collection of employees is empty!", "Saving error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             using (DataBaseContext context = new DataBaseContext())
             {
                 context.ChangeTracker.AutoDetectChangesEnabled = false;
@@ -69,14 +92,7 @@ namespace Tables.MVVM.Model
                     for (int i = 0; i < TableData.Count; i++)
                     {
                         var employee = TableData[i];
-                        //var result = context.Employees.FirstOrDefault(
-                        //    e => e.Name == employee.Name
-                        //    && e.LastName == employee.LastName
-                        //    && e.Surname == employee.Surname);
-                        //if (result == null)
-                        //{
-                            context.Employees.Add(employee);
-                        //}
+                        context.Employees.Add(employee);
 
                         if (i % 5000 == 0)
                         {
@@ -93,6 +109,9 @@ namespace Tables.MVVM.Model
             }
         }
 
+        /// <summary>
+        /// Loads employees from database
+        /// </summary>
         public void LoadFromDb()
         {
             using (DataBaseContext context = new DataBaseContext())
@@ -101,15 +120,9 @@ namespace Tables.MVVM.Model
             }
         }
 
-        public void UpdateDb(Employee employee)
-        {
-            // TODO: implement update function
-            using (DataBaseContext context = new DataBaseContext())
-            {
-                //context.Employees.Update();
-            }
-        }
-
+        /// <summary>
+        /// Clears database
+        /// </summary>
         public void ClearDb()
         {
             using (DataBaseContext context = new DataBaseContext())
@@ -119,118 +132,36 @@ namespace Tables.MVVM.Model
             }
         }
 
+        /// <summary>
+        /// Saves employees to XML file in location of filePath by given filter
+        /// </summary>
+        /// <param name="filePath">Location of a file </param>
+        /// <param name="filter">Filter for export query</param>
         public void SaveToXml(string filePath, Filter filter)
         {
             DataHandler handler = new DataHandler();
-            Employee? sample = ProccesFilter(filter);
+            Employee? sample = handler.ProccesFilter(filter);
             if (sample != null)
             {
-                IEnumerable<Employee> selectedEmployees = GetEmployeesBySample(sample);
+                IEnumerable<Employee> selectedEmployees = handler.GetEmployeesBySample(sample);
                 handler.SerializeXml(filePath, TableName, selectedEmployees);
             }
         }
 
+        /// <summary>
+        /// Saves employees to Excel file in location of filePath by given filter
+        /// </summary>
+        /// <param name="filePath">Location of a file </param>
+        /// <param name="filter">Filter for export query</param>
         public void SaveToExcel(string filePath, Filter filter)
         {
             DataHandler handler = new DataHandler();
-            Employee? sample = ProccesFilter(filter);
+            Employee? sample = handler.ProccesFilter(filter);
             if (sample != null)
             {
-                IEnumerable<Employee> selectedEmployees = GetEmployeesBySample(sample);
+                IEnumerable<Employee> selectedEmployees = handler.GetEmployeesBySample(sample);
                 handler.SerializeExcel(filePath, TableName, selectedEmployees);
             }
-        }
-
-        private IEnumerable<Employee> GetEmployeesBySample(Employee sample)
-        {
-            List<Employee> selectedEmployees;
-            using (DataBaseContext context = new DataBaseContext())
-            {
-                context.ChangeTracker.AutoDetectChangesEnabled = false;
-                try
-                {
-                    selectedEmployees = context.Employees.ToList();
-                    if (sample.Date != DateTime.MinValue)
-                    {
-                        selectedEmployees = selectedEmployees.Where(e => e.Date == sample.Date).ToList();
-                    }
-                    if (!sample.Name.Equals(String.Empty))
-                    {
-                        selectedEmployees = selectedEmployees.Where(e => e.Name == sample.Name).ToList();
-                    }
-                    if (!sample.LastName.Equals(String.Empty))
-                    {
-                        selectedEmployees = selectedEmployees.Where(e => e.LastName == sample.LastName).ToList();
-                    }
-                    if (!sample.Surname.Equals(String.Empty))
-                    {
-                        selectedEmployees = selectedEmployees.Where(e => e.Surname == sample.Surname).ToList();
-                    }
-                    if (!sample.City.Equals(String.Empty))
-                    {
-                        selectedEmployees = selectedEmployees.Where(e => e.City == sample.City).ToList();
-                    }
-                    if (!sample.Country.Equals(String.Empty))
-                    {
-                        selectedEmployees = selectedEmployees.Where(e => e.Country == sample.Country).ToList();
-                    }
-                    if (selectedEmployees.Count == context.Employees.Count() || selectedEmployees.Count == 0)
-                    {
-                        MessageBox.Show("No occurences", "Filter error!", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        selectedEmployees.Clear();
-                    }
-                }
-                finally
-                {
-                    context.ChangeTracker.AutoDetectChangesEnabled = true;
-                }
-            }
-            return selectedEmployees;
-        }
-
-        private Employee? ProccesFilter(Filter filter)
-        {
-            if (filter == null)
-            {
-                MessageBox.Show("Filter is null!", "Filter error!", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return null;
-            }
-            Employee employee = new Employee()
-            {
-                Date = DateTime.MinValue,
-                Name = String.Empty,
-                LastName = String.Empty,
-                Surname = String.Empty,
-                City = String.Empty,
-                Country = String.Empty
-            };
-            DateTime date;
-            if (DateTime.TryParse(filter.Date, out date))
-            {
-                employee.Date = date;
-            }
-            if (!String.IsNullOrEmpty(filter.Name))
-            {
-                employee.Name = filter.Name;
-            }
-            if (!String.IsNullOrEmpty(filter.LastName))
-            {
-                employee.LastName = filter.LastName;
-            }
-            if (!String.IsNullOrEmpty(filter.Surname))
-            {
-                employee.Surname = filter.Surname;
-            }
-            if (!String.IsNullOrEmpty(filter.City))
-            {
-                employee.City = filter.City;
-            }
-            if (!String.IsNullOrEmpty(filter.Country))
-            {
-                employee.Country = filter.Country;
-            }
-            //MessageBox.Show("Wrong Date format!", "Data error!", MessageBoxButton.OK, MessageBoxImage.Error);
-            return employee;
         }
     }
 }

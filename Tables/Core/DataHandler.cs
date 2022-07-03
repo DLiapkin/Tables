@@ -1,20 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Xml.Linq;
+using System.Data;
+using System.Linq;
 using System.Windows;
+using System.Xml.Linq;
 using Tables.MVVM.Model;
+using System.Collections.Generic;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
-using System.Data;
-using System.Linq;
 
 namespace Tables.Core
 {
+    /// <summary>
+    /// Class for Serialization and data manipulations
+    /// </summary>
     class DataHandler
     {
+        /// <summary>
+        /// Serializes selected employees to a XML file located in filePath
+        /// </summary>
+        /// <param name="filePath">Location of a file </param>
+        /// <param name="tableName">Name of the table</param>
+        /// <param name="employees">A collection of selected employes</param>
         public void SerializeXml(string filePath, string tableName, IEnumerable<Employee> employees)
         {
+            if (String.IsNullOrEmpty(filePath))
+            {
+                MessageBox.Show("Incorret file path!", "Serialization error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (String.IsNullOrEmpty(tableName))
+            {
+                MessageBox.Show("Incorret table name!", "Serialization error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (employees == null)
+            {
+                MessageBox.Show("Incorret collection of employees!", "Serialization error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             List<Employee>rowsToSave = new List<Employee>(employees);
             XDocument document = new XDocument();
             XElement records = new XElement(tableName);
@@ -33,8 +58,30 @@ namespace Tables.Core
             document.Save(filePath);
         }
 
+        /// <summary>
+        /// Serializes selected employees to a Excel file located in filePath
+        /// </summary>
+        /// <param name="filePath">Location of a file </param>
+        /// <param name="tableName">Name of the table</param>
+        /// <param name="employees">A collection of selected employes</param>
         public void SerializeExcel(string filePath, string tableName, IEnumerable<Employee> employees)
         {
+            if (String.IsNullOrEmpty(filePath))
+            {
+                MessageBox.Show("Incorret file path!", "Serialization error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (String.IsNullOrEmpty(tableName))
+            {
+                MessageBox.Show("Incorret table name!", "Serialization error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (employees == null)
+            {
+                MessageBox.Show("Incorret collection of employees!", "Serialization error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             DataTable epmployeesTable = new DataTable();
             epmployeesTable.TableName = tableName;
             epmployeesTable.Columns.Add("Date", typeof(DateTime));
@@ -120,6 +167,114 @@ namespace Tables.Core
                 MessageBox.Show("Couldn't create Excel file.\r\nException: " + ex.Message);
                 return;
             }
+        }
+
+        /// <summary>
+        /// Select employees by given sample entity
+        /// </summary>
+        /// <param name="sample">Sample employee for query</param>
+        /// <returns>Collection of employees.</returns>
+        public IEnumerable<Employee> GetEmployeesBySample(Employee sample)
+        {
+            if (sample == null)
+            {
+                MessageBox.Show("Filter is invalid!", "Filter error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return Enumerable.Empty<Employee>();
+            }
+
+            List<Employee> selectedEmployees;
+            using (DataBaseContext context = new DataBaseContext())
+            {
+                context.ChangeTracker.AutoDetectChangesEnabled = false;
+                try
+                {
+                    selectedEmployees = context.Employees.ToList();
+                    if (sample.Date != DateTime.MinValue)
+                    {
+                        selectedEmployees = selectedEmployees.Where(e => e.Date == sample.Date).ToList();
+                    }
+                    if (!sample.Name.Equals(String.Empty))
+                    {
+                        selectedEmployees = selectedEmployees.Where(e => e.Name == sample.Name).ToList();
+                    }
+                    if (!sample.LastName.Equals(String.Empty))
+                    {
+                        selectedEmployees = selectedEmployees.Where(e => e.LastName == sample.LastName).ToList();
+                    }
+                    if (!sample.Surname.Equals(String.Empty))
+                    {
+                        selectedEmployees = selectedEmployees.Where(e => e.Surname == sample.Surname).ToList();
+                    }
+                    if (!sample.City.Equals(String.Empty))
+                    {
+                        selectedEmployees = selectedEmployees.Where(e => e.City == sample.City).ToList();
+                    }
+                    if (!sample.Country.Equals(String.Empty))
+                    {
+                        selectedEmployees = selectedEmployees.Where(e => e.Country == sample.Country).ToList();
+                    }
+                    if (selectedEmployees.Count == context.Employees.Count() || selectedEmployees.Count == 0)
+                    {
+                        MessageBox.Show("No occurences", "Filter error!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        selectedEmployees.Clear();
+                    }
+                }
+                finally
+                {
+                    context.ChangeTracker.AutoDetectChangesEnabled = true;
+                }
+            }
+            return selectedEmployees;
+        }
+
+        /// <summary>
+        /// Generates sample employee entity by given filter
+        /// </summary>
+        /// <param name="filter">Filter for export query</param>
+        /// <returns>Employee if the <paramref ref="filter"/> parameter was valid; otherwise, null.</returns>
+        public Employee? ProccesFilter(Filter filter)
+        {
+            if (filter == null)
+            {
+                MessageBox.Show("Filter is null!", "Filter error!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return null;
+            }
+
+            Employee employee = new Employee()
+            {
+                Date = DateTime.MinValue,
+                Name = String.Empty,
+                LastName = String.Empty,
+                Surname = String.Empty,
+                City = String.Empty,
+                Country = String.Empty
+            };
+            DateTime date;
+            if (DateTime.TryParse(filter.Date, out date))
+            {
+                employee.Date = date;
+            }
+            if (!String.IsNullOrEmpty(filter.Name))
+            {
+                employee.Name = filter.Name;
+            }
+            if (!String.IsNullOrEmpty(filter.LastName))
+            {
+                employee.LastName = filter.LastName;
+            }
+            if (!String.IsNullOrEmpty(filter.Surname))
+            {
+                employee.Surname = filter.Surname;
+            }
+            if (!String.IsNullOrEmpty(filter.City))
+            {
+                employee.City = filter.City;
+            }
+            if (!String.IsNullOrEmpty(filter.Country))
+            {
+                employee.Country = filter.Country;
+            }
+            return employee;
         }
     }
 }

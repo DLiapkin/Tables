@@ -1,10 +1,13 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using Tables.Core;
+using Microsoft.Win32;
 using Tables.MVVM.Model;
 
 namespace Tables.MVVM.ViewModel
 {
+    /// <summary>
+    /// Represents View Model that controls Table UserControl
+    /// </summary>
     class TableViewModel : BaseViewModel
     {
         private bool isCollapsed = true;

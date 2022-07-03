@@ -24,10 +24,6 @@ namespace Tables.MVVM.View
         public TableView()
         {
             InitializeComponent();
-            //TableViewModel tableViewModel = new TableViewModel();
-            //DataContext = tableViewModel;
-            //tableViewModel.InitializeTable();
-            //employeeGrid.ItemsSource = tableViewModel.Table.TableData;
         }
     }
 }

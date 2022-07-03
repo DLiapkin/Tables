@@ -1,8 +1,10 @@
 ﻿using Tables.Core;
-using Tables.MVVM.Model;
 
 namespace Tables.MVVM.ViewModel
 {
+    /// <summary>
+    /// Represents View Model that controls Main Window
+    /// </summary>
     class MainViewModel : BaseViewModel
     {
         public HomeViewModel homeViewModel { get; set; }
