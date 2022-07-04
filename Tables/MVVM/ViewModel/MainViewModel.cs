@@ -7,8 +7,8 @@ namespace Tables.MVVM.ViewModel
     /// </summary>
     class MainViewModel : BaseViewModel
     {
-        public HomeViewModel homeViewModel { get; set; }
-        public TableViewModel tableViewModel { get; set; }
+        public HomeViewModel HomeViewModel { get; set; }
+        public TableViewModel TableViewModel { get; set; }
 
         public RelayCommand HomeViewCommand { get; set; }
         public RelayCommand TableViewCommand { get; set; }
@@ -27,17 +27,17 @@ namespace Tables.MVVM.ViewModel
 
         public MainViewModel()
         {
-            homeViewModel = new HomeViewModel();
-            tableViewModel = new TableViewModel();
-            CurrentView = homeViewModel;
+            HomeViewModel = new HomeViewModel();
+            TableViewModel = new TableViewModel();
+            CurrentView = HomeViewModel;
 
             HomeViewCommand = new RelayCommand(o =>
             {
-                CurrentView = homeViewModel;
+                CurrentView = HomeViewModel;
             });
             TableViewCommand = new RelayCommand(o =>
             {
-                CurrentView = tableViewModel;
+                CurrentView = TableViewModel;
             });
         }
     }

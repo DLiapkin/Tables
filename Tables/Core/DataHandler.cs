@@ -90,7 +90,6 @@ namespace Tables.Core
             epmployeesTable.Columns.Add("Surname", typeof(string));
             epmployeesTable.Columns.Add("City", typeof(string));
             epmployeesTable.Columns.Add("Country", typeof(string));
-
             foreach (Employee employee in employees)
             {
                 epmployeesTable.Rows.Add(new object[] 
@@ -109,9 +108,7 @@ namespace Tables.Core
                 using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Create(filePath, SpreadsheetDocumentType.Workbook))
                 {
                     WorkbookPart workbookPart = spreadsheetDocument.AddWorkbookPart();
-
                     workbookPart.Workbook = new Workbook();
-
                     workbookPart.Workbook.Sheets = new Sheets();
 
                     var sheetPart = workbookPart.AddNewPart<WorksheetPart>();
@@ -120,19 +117,16 @@ namespace Tables.Core
 
                     Sheets sheets = workbookPart.Workbook.GetFirstChild<Sheets>();
                     string relationshipId = workbookPart.GetIdOfPart(sheetPart);
-
                     uint sheetId = 1;
                     if (sheets.Elements<Sheet>().Count() > 0)
                     {
                         sheetId =
                             sheets.Elements<Sheet>().Select(s => s.SheetId.Value).Max() + 1;
                     }
-
                     Sheet sheet = new Sheet() { Id = relationshipId, SheetId = sheetId, Name = epmployeesTable.TableName };
                     sheets.Append(sheet);
 
                     Row headerRow = new Row();
-
                     List<String> columns = new List<string>();
                     foreach (DataColumn column in epmployeesTable.Columns)
                     {
@@ -144,9 +138,7 @@ namespace Tables.Core
                         headerRow.AppendChild(cell);
                     }
 
-
                     sheetData.AppendChild(headerRow);
-
                     foreach (DataRow dsrow in epmployeesTable.Rows)
                     {
                         Row newRow = new Row();
