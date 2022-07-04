@@ -4,9 +4,106 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tables"
+        xmlns:viewModel="clr-namespace:Tables.MVVM.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Height="600" Width="900"
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True"
+        ResizeMode="CanResizeWithGrip">
 
-    </Grid>
+    <Window.DataContext>
+        <viewModel:MainViewModel/>
+    </Window.DataContext>
+    
+    <Border Background="#272537"
+            CornerRadius="20, 0, 0, 20">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Border Background="#272529"
+                    Grid.Column="0">
+                <TextBlock Text ="Tables"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left"
+                       Foreground="White"
+                       FontSize = "18"
+                       Margin="20,0,0,0"/>
+            </Border>
+
+            <Border Background="#272529"
+                    Grid.Column="1" Grid.ColumnSpan="2">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Content="🗕︎"
+                            Height="20"
+                            Width="20"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Background="Transparent"
+                            Foreground="White"
+                            BorderThickness="0"
+                            Margin="0 5 5 0"
+                            Click="MinimizeButtonClick"/>
+
+                    <Button Content="🗖︎"
+                            Height="20"
+                            Width="20"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Background="Transparent"
+                            Foreground="White"
+                            FontSize="13"
+                            BorderThickness="0"
+                            Margin="0 5 5 0"
+                            Click="WindowStateButtonClick"/>
+
+                    <Button Content="✕"
+                            Height="20"
+                            Width="20"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Background="Transparent"
+                            Foreground="White"
+                            BorderThickness="0"
+                            Margin="0 5 5 0"
+                            Click="CloseButtonClick"/>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Grid.Row="1">
+                <RadioButton Content="Home"
+                             IsChecked="True"
+                             Command="{Binding HomeViewCommand}"
+                             Height="50"
+                             Foreground="White"
+                             FontSize="14"
+                             Style="{StaticResource MenuButtonTheme}"/>
+
+                <RadioButton Content="Table"
+                             Command="{Binding TableViewCommand}"
+                             Height="50"
+                             Foreground="White"
+                             FontSize="14"
+                             Style="{StaticResource MenuButtonTheme}"/>
+
+            </StackPanel>
+
+            <ContentControl Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="5"
+                            Content="{Binding CurrentView}">
+            </ContentControl>
+
+        </Grid>
+
+    </Border>
 </Window>
