@@ -14,13 +14,11 @@ namespace Tables.MVVM.Model
     class TableModel
     {
         public string TableName { get; set; }
-        public List<string> ColumnHeaders { get; set; }
         public ObservableCollection<Employee> TableData { get; set; }
 
-        public TableModel(string tableName, List<string> columnHeaders, ObservableCollection<Employee> tableData)
+        public TableModel(string tableName, ObservableCollection<Employee> tableData)
         {
             TableName = tableName;
-            ColumnHeaders = columnHeaders;
             TableData = tableData;
         }
 
@@ -28,7 +26,6 @@ namespace Tables.MVVM.Model
         {
             string[] path = filePath.Split('\\');
             TableName = path[^1].Replace(".csv", "");
-            ColumnHeaders = new List<string>() {"Id", "Date", "Name", "LastName", "Surname", "City", "Country"};
             TableData = new ObservableCollection<Employee>();
             SaveToDb(filePath);
         }
@@ -36,7 +33,6 @@ namespace Tables.MVVM.Model
         public TableModel()
         {
             TableName = "FromDataBase";
-            ColumnHeaders = new List<string>() { "Id", "Date", "Name", "LastName", "Surname", "City", "Country" };
             TableData = new ObservableCollection<Employee>();
             LoadFromDb();
         }
